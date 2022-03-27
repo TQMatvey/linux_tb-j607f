@@ -5,6 +5,7 @@
 /dts-v1/;
 
 #include <dt-bindings/leds/common.h>
+#include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
 #include "sdm632.dtsi"
 #include "pm8953.dtsi"
 #include "pmi632.dtsi"
@@ -24,6 +25,20 @@
 
 	chosen {
 		stdout-path = "serial0:115200n8";
+	};
+
+	clocks {
+		compatible = "simple-bus";
+
+		divclk1_cdc: divclk1 {
+			compatible = "gpio-gate-clock";
+			clocks = <&rpmcc RPM_SMD_DIV_CLK2>;
+			#clock-cells = <0>;
+			enable-gpios = <&pm8953_gpios 1 GPIO_ACTIVE_HIGH>;
+
+			pinctrl-names = "default";
+			pinctrl-0 = <&divclk1_default_state>;
+		};
 	};
 
 	gpio-keys {
@@ -59,6 +74,16 @@
 		pinctrl-0 = <&camss_mclk1_default>;
 		clocks = <&gcc GCC_CAMSS_MCLK1_CLK>;
 		regulator-always-on;
+	};
+
+	wcd_vout_1p8: wcd-vout-1p8 {
+		compatible = "regulator-fixed";
+		regulator-name = "wcd-vout-1p8";
+		regulator-min-microvolt = <1800000>;
+		regulator-max-microvolt = <1800000>;
+		gpio = <&tlmm 50 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
+		vin-supply = <&pm8953_s4>;
 	};
 };
 
@@ -202,6 +227,17 @@
 	power-domain-names = "cx", "mx", "mss";
 
 	pll-supply = <&pm8953_l7>;
+};
+
+&pm8953_gpios {
+	divclk1_default_state: divclk1-default-state {
+		pins = "gpio1";
+		function = "func1";
+		qcom,drive-strength = <PMIC_GPIO_STRENGTH_MED>;
+		power-source = <0>;
+		bias-disable;
+		output-low;
+	};
 };
 
 &pm8953_resin {
@@ -372,3 +408,21 @@
 &usb3_dwc3 {
 	dr_mode = "peripheral";
 };
+
+/*
+&wcd9335 {
+	clock-names = "mclk"; //, slimbus;
+	// FIXME
+	clocks = <&divclk1_cdc>; //, // pm8953 gpio1 cdc_pm_mclk1
+		 //<&rpmcc RPM_SMD_BB_CLK1>; // gpio70 SLIMBUS_CLK
+	// mclk2 would be gpio66 function pri_mi2s
+
+	vdd-buck-supply = <&wcd_vout_1p8>;
+	vdd-buck-sido-supply = <&wcd_vout_1p8>; // VDD_SIDO ?
+	vdd-rx-supply = <&wcd_vout_1p8>;
+	vdd-tx-supply = <&wcd_vout_1p8>;
+	//vdd-vbat-supply = <&>; // VBAT_ADC_IN?
+	vdd-micbias-supply = <&vph_pwr>;
+	vdd-io-supply = <&wcd_vout_1p8>;
+};
+*/
