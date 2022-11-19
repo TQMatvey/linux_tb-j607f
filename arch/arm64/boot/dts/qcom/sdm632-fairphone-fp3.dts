@@ -172,6 +172,14 @@
 	};
 };
 
+&i2c_6 {
+	status = "okay";
+
+	/* Speaker amp AW8898 @ 34 */
+	/* Speaker amp TAS2557 @ 4c */
+	// sudo gpioset gpiochip0 21=1
+};
+
 &iris {
 	vddxo-supply = <&pm8953_l7>;
 	vddrfa-supply = <&pm8953_l19>;
