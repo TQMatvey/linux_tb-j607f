@@ -224,6 +224,11 @@ static int msm8916_qdsp6_startup(struct snd_pcm_substream *substream)
 	if (++data->mi2s_clk_count[mi2s] > 1)
 		return 0;
 
+	// HACK, somewhat matches clk2_config downstream
+	//ret = snd_soc_dai_set_sysclk(cpu_dai, Q6AFE_LPASS_CLK_ID_SPEAKER_I2S_OSR, 11289600, 0);
+	//if (ret)
+	//	dev_err(card->dev, "Failed to enable speaker_i2s_osr clk: %d\n", ret);
+
 	ret = snd_soc_dai_set_sysclk(cpu_dai, qdsp6_get_bit_clk_id(data, mi2s), MI2S_BCLK_RATE, 0);
 	if (ret)
 		dev_err(card->dev, "Failed to enable LPAIF bit clk: %d\n", ret);

@@ -2662,9 +2662,6 @@
 				    "quin-iomux";
 
 			audio-routing =
-				"AMIC1", "MIC BIAS External1",
-				"AMIC2", "MIC BIAS External2",
-				"AMIC3", "MIC BIAS External1",
 				"MM_DL1", "MultiMedia1 Playback",
 				"MM_DL3", "MultiMedia3 Playback",
 				"MM_DL4", "MultiMedia4 Playback",
@@ -2707,35 +2704,35 @@
 				};
 			};
 
-			primary-mi2s-dai-link {
-				link-name = "Primary MI2S";
-				cpu {
-					sound-dai = <&q6afedai PRIMARY_MI2S_RX>;
-				};
+			//primary-mi2s-dai-link {
+			//	link-name = "Primary MI2S";
+			//	cpu {
+			//		sound-dai = <&q6afedai PRIMARY_MI2S_RX>;
+			//	};
 
-				platform {
-					sound-dai = <&q6routing>;
-				};
+			//	platform {
+			//		sound-dai = <&q6routing>;
+			//	};
 
-				codec {
-					sound-dai = <&lpass_codec 0>, <&wcd_codec 0>;
-				};
-			};
+			//	codec {
+			//		sound-dai = <&lpass_codec 0>, <&wcd_codec 0>;
+			//	};
+			//};
 
-			tertiary-mi2s-dai-link {
-				link-name = "Tertiary MI2S";
-				cpu {
-					sound-dai = <&q6afedai TERTIARY_MI2S_TX>;
-				};
+			//tertiary-mi2s-dai-link {
+			//	link-name = "Tertiary MI2S";
+			//	cpu {
+			//		sound-dai = <&q6afedai TERTIARY_MI2S_TX>;
+			//	};
 
-				platform {
-					sound-dai = <&q6routing>;
-				};
+			//	platform {
+			//		sound-dai = <&q6routing>;
+			//	};
 
-				codec {
-					sound-dai = <&lpass_codec 1>, <&wcd_codec 1>;
-				};
-			};
+			//	codec {
+			//		sound-dai = <&lpass_codec 1>, <&wcd_codec 1>;
+			//	};
+			//};
 		};
 
 		lpass_codec: codec@c0f0000 {
