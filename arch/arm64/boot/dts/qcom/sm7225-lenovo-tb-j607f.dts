@@ -29,16 +29,22 @@
 	qcom,msm-id = <434 0x10000>, <459 0x10000>;
 	qcom,board-id = <8 0>;
 
-	aliases {
-		serial0 = &uart9;
-	};
-
 	chosen {
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
+	};
 
-		stdout-path = "serial0:115200n8";
+	gpio-keys {
+		compatible = "gpio-keys";
+		pinctrl-names = "default";
+		pinctrl-0 = <&gpio_keys_pin>;
+
+		key-volume-up {
+			label = "volume_up";
+			linux,code = <KEY_VOLUMEUP>;
+			gpios = <&pm6350_gpios 2 GPIO_ACTIVE_LOW>;
+		};
 	};
 };
 
@@ -282,6 +288,13 @@
 	status = "okay";
 };
 
+&ipa {
+        qcom,gsi-loader = "self";
+        memory-region = <&pil_ipa_fw_mem>;
+        firmware-name = "qcom/sm7225/tb-j607f/ipa_fws.mdt";
+        status = "okay";
+};
+
 &i2c2 {
 	clock-frequency = <400000>;
 	status = "okay";
@@ -316,6 +329,21 @@
 };
 
 &qupv3_id_1 {
+	status = "okay";
+};
+
+&pm6350_gpios {
+	gpio_keys_pin: gpio-keys-state {
+		pins = "gpio2";
+		function = PMIC_GPIO_FUNC_NORMAL;
+		bias-pull-up;
+		input-enable;
+		power-source = <0>;
+	};
+};
+
+&pm6350_resin {
+	linux,code = <KEY_VOLUMEDOWN>;
 	status = "okay";
 };
 
